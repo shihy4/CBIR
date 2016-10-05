@@ -56,7 +56,7 @@ public class CBIR extends JFrame {
     int picNo = 0;
     int imageCount = 1; //keeps up with the number of images displayed since the first page.
     int pageNo = 1;
-    
+    boolean flipped = false;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -276,6 +276,7 @@ public class CBIR extends JFrame {
     private void displayFirstPage(){
       int imageButNo = 0;
       panelBottom1.removeAll(); 
+      imageCount = 1;
       for(int i = 1; i < 21; i++){
         //System.out.println(button[i]);
         imageButNo = buttonOrder[i];
@@ -291,18 +292,18 @@ public class CBIR extends JFrame {
      * the button is added to the photographLabel and the picNo is set to the image number selected and being displayed.
     */ 
     private class IconButtonHandler implements ActionListener{
-      int pNo = 0;
-      ImageIcon iconUsed;
+        int pNo = 0;
+        ImageIcon iconUsed;
       
-      IconButtonHandler(int i, ImageIcon j){
-        pNo = i;
-        iconUsed = j;  //sets the icon to the one used in the button
-      }
+        IconButtonHandler(int i, ImageIcon j){
+            pNo = i;
+            iconUsed = j;  //sets the icon to the one used in the button
+        }
       
-      public void actionPerformed( ActionEvent e){
-        photographLabel.setIcon(iconUsed);
-        picNo = pNo;
-      }
+        public void actionPerformed( ActionEvent e){
+            photographLabel.setIcon(iconUsed);
+            picNo = pNo;
+        }
       
     }
     
@@ -317,11 +318,11 @@ public class CBIR extends JFrame {
             int imageButNo = 0;
             int endImage = imageCount + 20;
             if(endImage <= 101){
-              panelBottom1.removeAll(); 
-              for (int i = imageCount; i < endImage; i++) {
-                      imageButNo = buttonOrder[i];
-                      panelBottom1.add(button[imageButNo]);
-                      imageCount++;
+                panelBottom1.removeAll(); 
+                for (int i = imageCount; i < endImage; i++) {
+                    imageButNo = buttonOrder[i];
+                    panelBottom1.add(button[imageButNo]);
+                    imageCount++;
 
               }
 
@@ -348,15 +349,15 @@ public class CBIR extends JFrame {
               /*The for loop goes through the buttonOrder array starting with the startImage value
                * and retrieves the image at that place and then adds the button to the panelBottom1.
               */
-              for (int i = startImage; i < endImage; i++) {
-                      imageButNo = buttonOrder[i];
-                      panelBottom1.add(button[imageButNo]);
-                      imageCount--;
+            for (int i = startImage; i < endImage; i++) {
+                    imageButNo = buttonOrder[i];
+                    panelBottom1.add(button[imageButNo]);
+                    imageCount--;
 
-              }
+            }
 
-              panelBottom1.revalidate();  
-              panelBottom1.repaint();
+                panelBottom1.revalidate();  
+                panelBottom1.repaint();
             }
         }
     }
@@ -381,9 +382,76 @@ public class CBIR extends JFrame {
             double picSize = imageSize[pic];
             
 
-           /////////////////////
-      ///your code///
-      /////////////////
+                      /////////////////////
+            ///your code///
+            /////////////////
+            // temporary
+            for(int i = 1; i < 101; i++) {
+                panelBottom1.remove(button[i]);
+                button[i].removeAll();
+            }
+            if(!flipped) {
+                for (int i = 100; i > 0; i--) {
+                    ImageIcon icon = new ImageIcon(getClass().getResource("images/" + (i) + ".jpg"));
+
+                     if(icon != null){
+                        button[101 - i] = new JButton(icon);
+                        panelBottom1.add(button[101 - i]);
+                        button[101 - i].addActionListener(new CBIR.IconButtonHandler(101 - i, icon));
+                        buttonOrder[101 - i] = 101 - i;
+
+                    }
+                }
+            } else {
+                for (int i = 1; i < 101; i++) {
+                ImageIcon icon = new ImageIcon(getClass().getResource("images/" +  i + ".jpg"));
+             
+                 if(icon != null){
+                    button[i] = new JButton(icon);
+                    panelBottom1.add(button[i]);
+                    button[i].addActionListener(new CBIR.IconButtonHandler(i, icon));
+                    buttonOrder[i] = i;
+                    
+                    }
+                }
+               
+            }
+            flipped = !flipped;
+//            for (int i = 101 - picNo; i < 101; i++) {
+//                ImageIcon icon = new ImageIcon(getClass().getResource("images/" + (101 - i) + ".jpg"));
+//             
+//                 if(icon != null){
+//                    button[i] = new JButton(icon);
+//                    panelBottom1.add(button[i]);
+//                    button[i].addActionListener(new CBIR.IconButtonHandler(i, icon));
+//                    buttonOrder[i] = i;
+//                    
+//                }
+//            }
+//            for (int i = 100; i >= picNo; i--) {
+//                ImageIcon icon = new ImageIcon(getClass().getResource("images/" + i + ".jpg"));
+//             
+//                 if(icon != null){
+//                    button[i] = new JButton(icon);
+//                    panelBottom1.add(button[i]);
+//                    button[i].addActionListener(new CBIR.IconButtonHandler(i, icon));
+//                    buttonOrder[i] = i;
+//                    
+//                }
+//            }
+//            for (int i = 101 - picNo; i < 101; i++) {
+//                ImageIcon icon = new ImageIcon(getClass().getResource("images/" + i + ".jpg"));
+//             
+//                 if(icon != null){
+//                    button[i] = new JButton(icon);
+//                    panelBottom1.add(button[i]);
+//                    button[i].addActionListener(new CBIR.IconButtonHandler(i, icon));
+//                    buttonOrder[i] = i;
+//                    
+//                }
+//            }
+            displayFirstPage();
+      
         }
     }
     
@@ -404,9 +472,55 @@ public class CBIR extends JFrame {
             int pic = (picNo - 1);
             int picIntensity = 0;
             double picSize = imageSize[pic];
+            
             /////////////////////
       ///your code///
       /////////////////
+            for(int i = 1; i < 101; i++) {
+                panelBottom1.remove(button[i]);
+                button[i].removeAll();
+            }
+//            for (int i = 1; i < 101; i++) {
+//                ImageIcon icon = new ImageIcon(getClass().getResource("images/" +  i + ".jpg"));
+//             
+//                 if(icon != null){
+//                    button[i] = new JButton(icon);
+//                    panelBottom1.add(button[i]);
+//                    button[i].addActionListener(new CBIR.IconButtonHandler(i, icon));
+//                    buttonOrder[i] = i;
+//                    
+//                }
+//            }
+            if(!flipped) {
+                for (int i = 100; i > 0; i--) {
+                    ImageIcon icon = new ImageIcon(getClass().getResource("images/" + (i) + ".jpg"));
+
+                     if(icon != null){
+                        button[101 - i] = new JButton(icon);
+                        panelBottom1.add(button[101 - i]);
+                        button[101 - i].addActionListener(new CBIR.IconButtonHandler(101 - i, icon));
+                        buttonOrder[101 - i] = 101 - i;
+
+                    }
+                }
+                
+            } else {
+                for (int i = 1; i < 101; i++) {
+                ImageIcon icon = new ImageIcon(getClass().getResource("images/" +  i + ".jpg"));
+             
+                 if(icon != null){
+                    button[i] = new JButton(icon);
+                    panelBottom1.add(button[i]);
+                    button[i].addActionListener(new CBIR.IconButtonHandler(i, icon));
+                    buttonOrder[i] = i;
+                    
+                    }
+                }
+               
+            }
+            flipped = !flipped;
+            displayFirstPage();
+        
         }
     }
 
